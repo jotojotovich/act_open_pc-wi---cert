@@ -226,8 +226,37 @@ function get_pdf(){
     $inner .= '<td>Фамилия И.О. пользователя ПК</td>';
     $inner .= '</tr>';
     $inner .= '</table>';
+	
+	$inner .= '<br><br>';
+	
+	/** cert
+	Сертификат
+	lau 01-06-2023
+	*/
     
-    $inner .= '<br><br><br><br><br><br><br><br><br><br>';
+	$signer_cert = entity_load_single('node', $node->field_akt_szi_sig_cert[LANGUAGE_NONE][0]['target_id']);
+	$inner .= '<div style="width:70%; margin: 60px 0 20px; border: 2px solid black; padding:10px; font-size: 9pt; page-break-inside:avoid;">';
+	$inner .= '<div style="margin-bottom: 7px">ПОДПИСАНО (электронная подпись без штампа времени)</div>';
+	$inner .= '<b style="font-size: 10pt">'. $signer_cert->field_cert_subj_sn[LANGUAGE_NONE][0]['value'] .' '. $signer_cert->field_cert_subj_g[LANGUAGE_NONE][0]['value'] .'</b><br/>';
+	$inner .= $signer_cert->field_cert_subj_cn[LANGUAGE_NONE][0]['value'] .'</b><br/>';
+	$inner .= 'Издатель: '. $signer_cert->field_cert_iss_cn[LANGUAGE_NONE][0]['value'] .'<br/>';
+	$inner .= 'Серийный номер: '. $signer_cert->field_cert_serial[LANGUAGE_NONE][0]['value'] .'<br/>';
+	$inner .= 'Срок действия: '. date('d.m.Y H:i:s', $signer_cert->field_cert_notbefore[LANGUAGE_NONE][0]['value']) .'&mdash;'. date('d.m.Y H:i:s', $signer_cert->field_cert_notafter[LANGUAGE_NONE][0]['value']) .' (UTC)<br/>';
+	$inner .= '</div>';  
+
+	$assurer_cert = entity_load_single('node', $node->field_akt_szi_assure_cert[LANGUAGE_NONE][0]['target_id']);
+	$inner .= '<div style="width:70%; border: 2px solid black; padding:10px; font-size: 9pt; page-break-inside:avoid;">';
+	$inner .= '<div style="margin-bottom: 7px">ПОДПИСЬ ЗАВЕРЕНА (электронная подпись со штампом времени)</div>';
+	$inner .= '<b style="font-size: 10pt">'. $assurer_cert->field_cert_subj_sn[LANGUAGE_NONE][0]['value'] .' '. $assurer_cert->field_cert_subj_g[LANGUAGE_NONE][0]['value'] .'</b><br/>';
+	$inner .= $assurer_cert->field_cert_subj_cn[LANGUAGE_NONE][0]['value'] .'</b><br/>';
+	$inner .= 'Издатель: '. $assurer_cert->field_cert_iss_cn[LANGUAGE_NONE][0]['value'] .'<br/>';
+	$inner .= 'Серийный номер: '. $assurer_cert->field_cert_serial[LANGUAGE_NONE][0]['value'] .'<br/>';
+	$inner .= 'Срок действия: '. date('d.m.Y H:i:s', $assurer_cert->field_cert_notbefore[LANGUAGE_NONE][0]['value']) .'&mdash;'. date('d.m.Y H:i:s', $assurer_cert->field_cert_notafter[LANGUAGE_NONE][0]['value']) .' (UTC)<br/>';
+	$inner .= '</div>';
+	
+	/** end cert */
+	
+	$inner .= '<br><br>';
     
     $inner .= '<p style="font-size:10px;">Кокшарова Виктория Александровна.</p>';
     $inner .= '<p style="font-size:10px;">_______________________________________</p>';
